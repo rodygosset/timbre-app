@@ -1,9 +1,7 @@
-import { Dimensions, Platform, SafeAreaView, View } from "react-native";
+import { Platform, SafeAreaView } from "react-native";
 import styles from "@styles/components/screen-container.scss";
 import { fonts } from "@utils/fonts";
 import { useFonts } from "expo-font";
-
-import AppBackground from "@assets/app-bg.svg";
 
 interface Props {
     children: React.ReactNode;
@@ -34,11 +32,6 @@ const ScreenContainer = (
     return (
         fontsLoaded ?
             <SafeAreaView style={safeAreaStyles}>
-                <AppBackground 
-                    style={styles.appBackground} 
-                    width={Dimensions.get("screen").width} 
-                    height={Dimensions.get('screen').height} 
-                />
                 {children}
             </SafeAreaView>
         :
