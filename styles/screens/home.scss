@@ -2,21 +2,3 @@
 @import "../base/_typography.scss";
 @import "../base/_mixins.scss";
 
-.screen {
-
-    @extend .screenContainer;
-    background: $black;
-
-    padding: 48px 16px 32px;
-
-}
-
-.appName {
-    @include header-1-light;
-    color: $white;
-}
-
-.caption {
-    @include header-4-light;
-    color: $white-400;
-}

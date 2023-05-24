@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '@screens/home';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // this component serves as the kernel of the app
 
@@ -17,7 +18,7 @@ export default function App() {
 	// render
 
 	return (
-		<>
+		<SafeAreaProvider>
 			<NavigationContainer>
 				<Stack.Navigator 
 					screenOptions={{  headerShown: false }}>
@@ -29,7 +30,7 @@ export default function App() {
 				</Stack.Navigator>
 			</NavigationContainer>
 			<StatusBar style="auto" />
-		</>
+		</SafeAreaProvider>
 	)
 }
 
