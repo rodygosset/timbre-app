@@ -10,6 +10,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import styles from "@styles/components/screen-container.scss";
 import { LinearGradient } from 'expo-linear-gradient';
+import Transform from '@screens/transform';
+import Saved from '@screens/saved';
+import { fonts } from '@utils/fonts';
+import { useFonts } from 'expo-font';
 
 // this component serves as the kernel of the app
 
@@ -19,35 +23,52 @@ const Tab = createMaterialTopTabNavigator()
 
 export default function App() {
 
+	// load the fonts
+
+	const [fontsLoaded] = useFonts(fonts)
+
+	// don't display anything until the fonts are loaded
+
 	// implement navigation
 
 	// render
 
 	return (
-		<SafeAreaProvider style={{ backgroundColor: "#191919" }}>
-			<LinearGradient
-				colors={['#039BE5', '#E91E63']}
-				style={styles.appBackground}
-				start={{ x: 0, y: 0 }}
-				end={{ x: 1, y: 1 }}
-			/>
-			<NavigationContainer>
-				<Tab.Navigator 
-					tabBarPosition='bottom'
-					tabBar={TabBar}
-					sceneContainerStyle={{ backgroundColor: "transparent" }}>
-					<Tab.Screen 
-						name="Home" 
-						component={Home}
-					/>
-					<Tab.Screen 
-						name="Records" 
-						component={Records}
-					/>
-				</Tab.Navigator>
-			</NavigationContainer>
-			<StatusBar style="auto" />
-		</SafeAreaProvider>
+		fontsLoaded ?
+			<SafeAreaProvider style={{ backgroundColor: "#191919" }}>
+				<LinearGradient
+					colors={['#039BE5', '#E91E63']}
+					style={styles.appBackground}
+					start={{ x: 0, y: 0 }}
+					end={{ x: 1, y: 1 }}
+				/>
+				<NavigationContainer>
+					<Tab.Navigator 
+						tabBarPosition='bottom'
+						tabBar={TabBar}
+						sceneContainerStyle={{ backgroundColor: "transparent" }}>
+						<Tab.Screen 
+							name="Home" 
+							component={Home}
+						/>
+						<Tab.Screen 
+							name="Records" 
+							component={Records}
+						/>
+						<Tab.Screen 
+							name="Transform" 
+							component={Transform}
+						/>
+						<Tab.Screen 
+							name="Saved" 
+							component={Saved}
+						/>
+					</Tab.Navigator>
+				</NavigationContainer>
+				<StatusBar style="auto" />
+			</SafeAreaProvider>
+		:
+		<></>
 	)
 }
 

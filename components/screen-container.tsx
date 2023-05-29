@@ -1,7 +1,5 @@
 import { Platform, SafeAreaView } from "react-native";
 import styles from "@styles/components/screen-container.scss";
-import { fonts } from "@utils/fonts";
-import { useFonts } from "expo-font";
 
 interface Props {
     children: React.ReactNode;
@@ -13,11 +11,6 @@ const ScreenContainer = (
     }: Props
 ) => {
 
-    // load the fonts
-
-	const [fontsLoaded] = useFonts(fonts)
-
-	// don't display anything until the fonts are loaded
 
     // manage safe area in Android
 
@@ -30,12 +23,9 @@ const ScreenContainer = (
     // render
 
     return (
-        fontsLoaded ?
-            <SafeAreaView style={safeAreaStyles}>
-                {children}
-            </SafeAreaView>
-        :
-        <></>
+        <SafeAreaView style={safeAreaStyles}>
+            {children}
+        </SafeAreaView>
     )
 
 }

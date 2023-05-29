@@ -2,8 +2,6 @@
 @import "../../base/_typography.scss";
 @import "../../base/_mixins.scss";
 
-$border-style: 1px solid $white-100;
-
 
 .container {
     @include flex-container(row, nowrap, center, center);

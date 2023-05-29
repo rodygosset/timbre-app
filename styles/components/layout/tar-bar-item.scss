@@ -1,0 +1,14 @@
+@import "../../abstracts/_colors.scss";
+@import "../../base/_typography.scss";
+@import "../../base/_mixins.scss";
+
+.item {
+    @include flex-container(column, nowrap, center, center);
+    gap: 8px;
+    flex: 1;
+    height: 100%;
+}
+
+.label {
+    @include typo-maker($text-xs-font-size, $font-weight-medium);
+}
