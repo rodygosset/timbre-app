@@ -2,3 +2,33 @@
 @import "../base/_typography.scss";
 @import "../base/_mixins.scss";
 
+.screen {
+    gap: 32px;
+}
+
+.circles {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+.recordButtonContainer {
+    @include flex-container(row, nowrap, center, center);
+    flex: 1;
+    aspect-ratio: 1;
+}
+
+.captionContainer {
+    @include flex-container(column, nowrap, center, center);
+    gap: 16px;
+}
+
+.caption {
+    @include typo-maker($text-md-font-size, $font-weight-light);
+    color: $white;
+}
+
+.subCaption {
+    @include typo-maker($text-md-font-size, $font-weight-light);
+    color: $white-400;
+}

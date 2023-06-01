@@ -1,0 +1,73 @@
+
+@import "./styles/abstracts/_colors.scss";
+@import "./styles/base/_typography.scss";
+@import "./styles/base/_mixins.scss";
+
+// button container styles
+
+.button {
+    padding: 0px 16px;
+    border-radius: 7px;
+
+    @include flex-container(row, nowrap, center, center);
+    gap: 7px;
+}
+
+.fullWidth {
+    align-self: stretch;
+}
+
+
+.primary {
+    background: $secondary;
+}
+
+.primaryPressed {
+    background: $secondary-600;
+}
+
+.secondary {
+    background: $white-100;
+}
+
+.secondaryPressed {
+    background: $white-200;
+}
+
+.tertiary {
+    background: transparent;
+    border: 1px solid $white-100;
+}
+
+.tertiaryPressed {
+    background: $white-100;
+}
+
+
+.round {
+    border-radius: 40px;
+    padding: 0;
+}
+
+// button text styles
+
+.title {
+    @include text-md-regular;
+    color: $white;
+}
+
+
+
+// button icon styles
+
+.icon {
+    color: $white;
+}
+
+.smallIcon {
+    @include small-icon;
+}
+
+.mediumIcon {
+    @include medium-icon;
+}

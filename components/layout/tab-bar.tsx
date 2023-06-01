@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native"
 import styles from "@styles/components/layout/tab-bar.scss"
 import { LinearGradient } from "expo-linear-gradient"
 import TabBarItem from "./tab-bar-item"
-import { useEffect } from "react"
 
 
 

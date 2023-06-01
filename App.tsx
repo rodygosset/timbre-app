@@ -45,6 +45,7 @@ export default function App() {
 				<NavigationContainer>
 					<Tab.Navigator 
 						tabBarPosition='bottom'
+						initialRouteName='Home'
 						tabBar={TabBar}
 						sceneContainerStyle={{ backgroundColor: "transparent" }}>
 						<Tab.Screen 

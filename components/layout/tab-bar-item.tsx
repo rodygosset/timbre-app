@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from "react-native"
 
 import styles from "@styles/components/layout/tar-bar-item.scss"
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faDownload, faFolder, faHome, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faFileWaveform, faHome, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 interface Props {
@@ -35,7 +35,7 @@ const TabBarItem = (
 
     const icons: { [key: string]: IconProp } = {
         'Home': faHome,
-        'Records': faFolder,
+        'Records': faFileWaveform,
         'Transform': faWaveSquare,
         'Saved': faDownload
     }

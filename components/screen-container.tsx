@@ -1,12 +1,15 @@
-import { Platform, SafeAreaView } from "react-native";
+import { Platform, SafeAreaView, StyleProp, View } from "react-native";
 import styles from "@styles/components/screen-container.scss";
+import { useEffect } from "react";
 
 interface Props {
+    style?: StyleProp<any>;
     children: React.ReactNode;
 }
 
 const ScreenContainer = (
     {
+        style = {},
         children
     }: Props
 ) => {
@@ -14,17 +17,20 @@ const ScreenContainer = (
 
     // manage safe area in Android
 
-    const safeAreaStyles = {
+    const viewStyles = {
         ...styles.container,
+        ...style,
         paddingTop: Platform.OS === "android" ? 48 : 0,
-        paddingBottom: Platform.OS === "android" ? 16 : 0,
+        paddingBottom: 32,
     }
 
     // render
 
     return (
-        <SafeAreaView style={safeAreaStyles}>
-            {children}
+        <SafeAreaView style={{ width: "100%", height: "100%" }}>
+            <View style={viewStyles}>
+                {children}
+            </View>
         </SafeAreaView>
     )
 
