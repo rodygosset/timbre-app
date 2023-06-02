@@ -4,7 +4,7 @@ import Brand from '@components/brand';
 import Button from '@components/button';
 import { faFileWaveform } from '@fortawesome/free-solid-svg-icons';
 import RecordButton from '@components/record-button';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import styles from '@styles/screens/home.scss';
 import { View, Text, AppState } from 'react-native';
@@ -13,6 +13,7 @@ import FadingCircles from '@assets/fading-circles.svg';
 import AnimatedCircle from '@components/animated-circle';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import { Context } from '@utils/context';
 
 const Home = ({ navigation }: ScreenProps) => {
 
@@ -96,6 +97,12 @@ const Home = ({ navigation }: ScreenProps) => {
         setIsRecording(false)
     }
 
+
+    // rename & save the recording to the list of recordings
+    // use the context to access the list
+
+    const { recordings, setRecordings } = useContext(Context)
+
     const saveRecording = async (uri: string) => {
         // move the file to the documents directory
 
@@ -103,10 +110,18 @@ const Home = ({ navigation }: ScreenProps) => {
 
         const newURI = uri.split('/').slice(0, -1).join('/') + '/' + newFileName
 
-        return FileSystem.moveAsync({
+        await FileSystem.moveAsync({
             from: uri,
             to: newURI
         })
+
+        // add the file to the list of recordings
+
+        setRecordings([ ...recordings, {
+            name: newFileName,
+            duration: timeElapsed,
+            uri: newURI
+        }])
     }
 
     // start recording when the button is pressed

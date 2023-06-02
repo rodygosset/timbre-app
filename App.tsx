@@ -32,7 +32,9 @@ export default function App() {
 	// keep the list of recordings consistent with local storage
 
 	const setRecordings = (list: AudioFileType[]) => {
-		setPersistedRecordings(list).then(recordingsSetter).catch(console.log)
+		setPersistedRecordings(list).then(recordingsSetter).then(() => {
+			getPersistedRecordings().then(newList => console.log("new list of recordings", newList)).catch(console.log)
+		}).catch(console.log)
 	}
 
 	// keep the list of transformed recordings consistent with local storage
