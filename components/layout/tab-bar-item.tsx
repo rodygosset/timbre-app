@@ -35,7 +35,7 @@ const TabBarItem = (
 
     const icons: { [key: string]: IconProp } = {
         'Home': faHome,
-        'Records': faFileWaveform,
+        'Recordings': faFileWaveform,
         'Transform': faWaveSquare,
         'Saved': faDownload
     }

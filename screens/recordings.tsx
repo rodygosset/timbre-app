@@ -3,7 +3,7 @@ import ScreenContainer from "@components/screen-container"
 import { Text } from "react-native"
 
 
-const Records = () => {
+const Recordings = () => {
 
     // render
 
@@ -16,4 +16,4 @@ const Records = () => {
 
 }
 
-export default Records
+export default Recordings

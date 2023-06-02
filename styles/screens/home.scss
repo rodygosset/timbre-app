@@ -32,3 +32,45 @@
     @include typo-maker($text-md-font-size, $font-weight-light);
     color: $white-400;
 }
+
+// while recording
+
+.recordingInfoContainer {
+
+    align-self: stretch;
+    @include flex-container(row, nowrap, space-between, center);
+    gap: 16px;
+}
+
+.recordingTextInfoContainer {
+    @include flex-container(column, nowrap, center, flex-start);
+    gap: 8px;
+}
+
+
+.recordingMessage {
+    @include typo-maker($text-md-font-size, $font-weight-light);
+    color: $white;
+}
+
+.recordingCaption {
+    @include typo-maker($text-md-font-size, $font-weight-light);
+    color: $white-400;
+}
+
+.timer {
+    
+    @include flex-container(row, nowrap, center, center);
+    padding: 0px 16px;
+    height: 35px;
+
+    border-radius: 8px;
+
+    background: rgba($white, 0.05);
+}
+
+.timerValue {
+
+    @include typo-maker($text-md-font-size, $font-weight-light);
+    color: $white;
+}

@@ -1,0 +1,19 @@
+@import "../abstracts/_colors.scss";
+@import "../base/_typography.scss";
+@import "../base/_mixins.scss";
+
+
+.wrapper {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1;
+
+    @include flex-container(row, nowrap, center, center);
+}
+
+.circle {
+    width: 120px;
+    aspect-ratio: 1;
+    border-radius: 80px;
+    border: 1px solid $primary;
+}
