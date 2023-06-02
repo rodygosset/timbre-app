@@ -5,9 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export interface AudioFileType {
-    uri: string,
-    duration: number, // in seconds
-    name: string
+    uri: string;
+    duration: number; // in seconds
+    name: string;
+    date: Date;
 }
 
 

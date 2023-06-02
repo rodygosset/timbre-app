@@ -15,6 +15,8 @@ import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { Context } from '@utils/context';
 
+import * as DocumentPicker from 'expo-document-picker';
+
 const Home = ({ navigation }: ScreenProps) => {
 
     // manage app focus and unfocus
@@ -103,10 +105,21 @@ const Home = ({ navigation }: ScreenProps) => {
 
     const { recordings, setRecordings } = useContext(Context)
 
-    const saveRecording = async (uri: string) => {
-        // move the file to the documents directory
+    const saveRecording = async (uri: string, rename: boolean = true, name?: string) => {
+        
+        if(!rename) {
+            setRecordings([ ...recordings, {
+                name: name || uri.split('/').slice(-1)[0],
+                duration: timeElapsed,
+                uri: uri,
+                date: new Date()
+            }])
+            return
+        }
+        
+        // rename the file
 
-        const newFileName = `timbre-app-rec-${Date.now()}.m4a`
+        const newFileName = `timbre-app-rec-${new Date()}.m4a`
 
         const newURI = uri.split('/').slice(0, -1).join('/') + '/' + newFileName
 
@@ -120,7 +133,8 @@ const Home = ({ navigation }: ScreenProps) => {
         setRecordings([ ...recordings, {
             name: newFileName,
             duration: timeElapsed,
-            uri: newURI
+            uri: newURI,
+            date: new Date()
         }])
     }
 
@@ -169,6 +183,30 @@ const Home = ({ navigation }: ScreenProps) => {
         isRecording ? startRecording().catch(handleErr) : stopRecording().catch(handleErr)
     }, [isRecording])
 
+
+    // let the user select a file from the file system
+
+    const OnFileSelect = async () => {
+        try {
+            // request permission to read files
+
+            const result = await DocumentPicker.getDocumentAsync({
+                type: 'audio/*',
+                copyToCacheDirectory: true,
+                multiple: false
+            })
+
+            if(result.type !== 'success') return
+
+            // add the file to the list of recordings
+
+            await saveRecording(result.uri, false, result.name)
+
+        } catch(e) {
+            console.log("Error while selecting a file: ", e)
+        }
+    }
+
     // render
 
     return (
@@ -203,7 +241,7 @@ const Home = ({ navigation }: ScreenProps) => {
                         icon={faFileWaveform}
                         title="Select an audio file"
                         role='secondary'
-                        onPress={() => {}}
+                        onPress={OnFileSelect}
                     />
                 </View>
             }

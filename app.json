@@ -20,6 +20,12 @@
     },
     "web": {
       "favicon": "./assets/icon.png"
-    }
+    },
+    "plugins": [
+      "expo-document-picker",
+      {
+        "iCloudContainerEnvironment": "Production"
+      }
+    ]
   }
 }

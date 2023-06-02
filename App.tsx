@@ -50,6 +50,13 @@ export default function App() {
 		getPersistedTransformedRecordings().then(transformedRecordingsSetter).catch(console.log)
 	}, [])
 
+
+	// show the list of recordings every time it changes
+
+	useEffect(() => {
+		console.log("recordings", recordings.map(r => r.name))
+	}, [recordings])
+
 	// memoize the context,
 	// to avoid needless React re-renders
 	const value = useMemo(
