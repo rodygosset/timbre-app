@@ -1,0 +1,44 @@
+@import "../abstracts/_colors.scss";
+@import "../base/_typography.scss";
+@import "../base/_mixins.scss";
+
+.container {
+
+    @include flex-container(column, nowrap, flex-start, flex-start);
+
+    flex: 1;
+    width: 100%;
+    // border: 1px solid $white-100;
+
+    padding: 16px 0px;
+
+    gap: 32px;
+}
+
+.header {
+
+    @include header-2-light;
+    color: $white;
+}
+
+.empty {
+
+    @include flex-container(column, nowrap, center, center);
+    gap: 8px;
+
+    width: 100%;
+
+    flex: 1;
+}
+
+.noRecordings {
+    
+        @include header-3-light;
+        color: $white;
+}
+
+.noRecordingsCaption {
+    
+        @include typo-maker($text-md-font-size, $font-weight-light);
+        color: $white-400;
+}

@@ -1,0 +1,16 @@
+@import "../abstracts/_colors.scss";
+@import "../base/_typography.scss";
+@import "../base/_mixins.scss";
+
+.container {
+
+    @include flex-container(column, nowrap, flex-start, stretch);
+    width: 100%;
+
+    gap: 16px;
+}
+
+.date {
+    @include text-md-medium;
+    color: $white-400;
+}

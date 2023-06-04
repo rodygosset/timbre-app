@@ -11,9 +11,20 @@
     width: 100%;
 }
 
+.inline {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    height: 90px;
+    width: 100%;
+}
+
 .textContainer {
     @include flex-container(column, nowrap, center, center);
     gap: 8px;
+}
+
+.textContainerInline {
+    align-items: flex-start;
 }
 
 .appName {
@@ -21,7 +32,17 @@
     color: $white;
 }
 
+.appNameInline {
+    @include header-3-light;
+    color: $white;
+}
+
 .caption {
     @include header-4-light;
+    color: $white-400;
+}
+
+.captionInline {
+    @include typo-maker($text-md-font-size, $font-weight-light);
     color: $white-400;
 }

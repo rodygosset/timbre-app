@@ -9,8 +9,7 @@ const Saved = () => {
 
     return (
         <ScreenContainer>
-            <Brand />
-            <Text>Saved baby</Text>
+            <Brand inline />
         </ScreenContainer>
     )
 

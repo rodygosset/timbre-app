@@ -10,7 +10,6 @@ const Transform = () => {
     return (
         <ScreenContainer>
             <Brand />
-            <Text>Transform baby</Text>
         </ScreenContainer>
     )
 

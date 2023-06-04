@@ -11,6 +11,11 @@ export interface AudioFileType {
     date: Date;
 }
 
+export interface ListOfRecordingsProps {
+    date: Date;
+    recordings: AudioFileType[];
+}
+
 
 // Context API configuration
 
@@ -41,7 +46,10 @@ export const Context = React.createContext(initContext)
  */
 
 export const getPersistedRecordings = () => {
-    return AsyncStorage.getItem('@recordings').then((res) => res != null ? JSON.parse(res) : []).catch(e => {
+    return AsyncStorage.getItem('@recordings').then((res) => res != null ? JSON.parse(res) : []).then(recordings => {
+        // convert the date string to Date object
+        return recordings.map((recording: AudioFileType) => ({...recording, date: new Date(recording.date)}))
+    }).catch(e => {
         console.log(e)
         return []
     }) as Promise<AudioFileType[]>

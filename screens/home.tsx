@@ -13,7 +13,7 @@ import FadingCircles from '@assets/fading-circles.svg';
 import AnimatedCircle from '@components/animated-circle';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
-import { Context } from '@utils/context';
+import { AudioFileType, Context } from '@utils/context';
 
 import * as DocumentPicker from 'expo-document-picker';
 
@@ -108,18 +108,26 @@ const Home = ({ navigation }: ScreenProps) => {
     const saveRecording = async (uri: string, rename: boolean = true, name?: string) => {
         
         if(!rename) {
-            setRecordings([ ...recordings, {
+
+            // get the duration of the audio file
+            // => we have to create a new audio object & get its status to get the duration
+
+            const duration = await Audio.Sound.createAsync({ uri }).then(sound => sound.sound.getStatusAsync()).then(status => status.isLoaded ? Math.floor((status.durationMillis || 0) / 1000) : 0)
+
+            const newRecording: AudioFileType = {
                 name: name || uri.split('/').slice(-1)[0],
-                duration: timeElapsed,
+                duration: duration,
                 uri: uri,
                 date: new Date()
-            }])
-            return
+            }
+
+            setRecordings([ ...recordings, newRecording ])
+            return newRecording
         }
         
         // rename the file
 
-        const newFileName = `timbre-app-rec-${new Date()}.m4a`
+        const newFileName = `timbre-app-rec-${new Date().toISOString()}.m4a`
 
         const newURI = uri.split('/').slice(0, -1).join('/') + '/' + newFileName
 
@@ -130,12 +138,15 @@ const Home = ({ navigation }: ScreenProps) => {
 
         // add the file to the list of recordings
 
-        setRecordings([ ...recordings, {
+        const newRecording: AudioFileType = {
             name: newFileName,
             duration: timeElapsed,
             uri: newURI,
             date: new Date()
-        }])
+        }
+
+        setRecordings([ ...recordings, newRecording])
+        return newRecording
     }
 
     // start recording when the button is pressed
@@ -173,8 +184,8 @@ const Home = ({ navigation }: ScreenProps) => {
         })
         const uri = recording.getURI()
         if(!uri) return
-        await saveRecording(uri)
-        console.log("recording saved !")
+        const res = await saveRecording(uri)
+        console.log("recording saved ! => ", res)
     }
 
     // start or stop the recording when the button is pressed

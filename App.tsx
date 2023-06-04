@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from '@screens/home';
 import Recordings from '@screens/recordings';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import styles from "@styles/components/screen-container.scss";
@@ -15,6 +15,12 @@ import Saved from '@screens/saved';
 import { fonts } from '@utils/fonts';
 import { useFonts } from 'expo-font';
 import { AudioFileType, Context, getPersistedRecordings, getPersistedTransformedRecordings, setPersistedRecordings } from '@utils/context';
+
+import {
+    BottomSheetModal,
+    BottomSheetModalProvider,
+  } from '@gorhom/bottom-sheet';
+import AudioPlayerModal from '@components/audio-player-modal';
 
 // this component serves as the kernel of the app
 
@@ -57,6 +63,8 @@ export default function App() {
 		console.log("recordings", recordings.map(r => r.name))
 	}, [recordings])
 
+	// useEffect(() => setRecordings([]), [])
+
 	// memoize the context,
 	// to avoid needless React re-renders
 	const value = useMemo(
@@ -69,51 +77,75 @@ export default function App() {
 
 	// don't display anything until the fonts are loaded
 
-	// implement navigation
+	
+	// bottom sheet modal audio player
+    // start with creating a ref for it
+
+    // callbacks for the bottom sheet modal
+
+    const [playingAudio, setPlayingAudio] = useState<AudioFileType>()
+	const [playingAudioIndex, setPlayingAudioIndex] = useState<number>(0)
+
+	const [toggler, setToggler] = useState(false)
+
+    const handlePresentModalPress = (audioFile: AudioFileType, index: number) => {
+		setToggler(!toggler)
+        setPlayingAudio(audioFile)
+		setPlayingAudioIndex(index)
+    }
+
 
 	// render
 
 	return (
-		<Context.Provider value={value}>
-		{
-			fontsLoaded ?
-				<SafeAreaProvider style={{ backgroundColor: "#191919" }}>
-					<LinearGradient
-						colors={['#039BE5', '#E91E63']}
-						style={styles.appBackground}
-						start={{ x: 0, y: 0 }}
-						end={{ x: 1, y: 1 }}
-					/>
-					<NavigationContainer>
-						<Tab.Navigator 
-							tabBarPosition='bottom'
-							initialRouteName='Home'
-							tabBar={TabBar}
-							sceneContainerStyle={{ backgroundColor: "transparent" }}>
-							<Tab.Screen 
-								name="Home" 
-								component={Home}
-							/>
-							<Tab.Screen 
-								name="Recordings" 
-								component={Recordings}
-							/>
-							<Tab.Screen 
-								name="Transform" 
-								component={Transform}
-							/>
-							<Tab.Screen 
-								name="Saved" 
-								component={Saved}
-							/>
-						</Tab.Navigator>
-					</NavigationContainer>
-					<StatusBar style="auto" />
-				</SafeAreaProvider>
-			:
-			<></>
-		}
-		</Context.Provider>
+		<BottomSheetModalProvider>
+			<Context.Provider value={value}>
+			{
+				fontsLoaded ?
+					<SafeAreaProvider style={{ backgroundColor: "#191919" }}>
+						<LinearGradient
+							colors={['#039BE5', '#E91E63']}
+							style={styles.appBackground}
+							start={{ x: 0, y: 0 }}
+							end={{ x: 1, y: 1 }}
+						/>
+						<NavigationContainer>
+							<Tab.Navigator 
+								tabBarPosition='bottom'
+								initialRouteName='Home'
+								tabBar={TabBar}
+								sceneContainerStyle={{ backgroundColor: "transparent" }}>
+								<Tab.Screen 
+									name="Home" 
+									component={Home}
+								/>
+								<Tab.Screen 
+									name="Recordings" 
+								>
+									{() => <Recordings onAudioPress={handlePresentModalPress} />}
+								</Tab.Screen>
+								<Tab.Screen 
+									name="Transform" 
+									component={Transform}
+								/>
+								<Tab.Screen 
+									name="Saved" 
+									component={Saved}
+								/>
+							</Tab.Navigator>
+						</NavigationContainer>
+						<StatusBar style="auto" />
+					</SafeAreaProvider>
+				:
+				<></>
+			}
+			</Context.Provider>
+            <AudioPlayerModal 
+				audio={playingAudio} 
+				index={playingAudioIndex}
+				toggler={toggler}
+			/>
+		</BottomSheetModalProvider>
 	)
 }
 
