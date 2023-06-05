@@ -1,0 +1,64 @@
+@import "../abstracts/_colors.scss";
+@import "../base/_typography.scss";
+@import "../base/_mixins.scss";
+
+.container {
+
+    @include flex-container(row, nowrap, space-between, center);
+    align-self: stretch;
+    width: 100%;
+    height: 50px;
+
+    border: 1px solid $white-100;
+
+    border-radius: 8px;
+
+    padding: 0px 16px;
+
+}
+
+.text {
+    @include text-md-regular;
+    color: $white;
+}
+
+.empty {
+    @include text-md-regular;
+    color: $white-400;
+}
+
+.icon {
+    @include small-icon;
+    color: $white-600;
+}
+
+.options {
+    @include flex-container(row, wrap, flex-start, flex-start);
+    gap: 16px;
+}
+
+.optionContainer {
+
+    @include flex-container(row, nowrap, center, center);
+
+    height: 40px;
+
+    border: 1px solid $white-100;
+
+    padding: 0px 8px;
+
+    border-radius: 8px;
+}
+
+.optionText {
+    @include text-sm-regular;
+    color: $white-400;
+}
+
+.optionSelected {
+    background: $white-100;
+}
+
+.optionTextSelected {
+    color: $white;
+}

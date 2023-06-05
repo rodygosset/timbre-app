@@ -16,6 +16,7 @@ import * as FileSystem from 'expo-file-system';
 import { AudioFileType, Context } from '@utils/context';
 
 import * as DocumentPicker from 'expo-document-picker';
+import { getAudioDuration } from '@utils/lib';
 
 const Home = ({ navigation }: ScreenProps) => {
 
@@ -105,14 +106,6 @@ const Home = ({ navigation }: ScreenProps) => {
 
     const { recordings, setRecordings } = useContext(Context)
 
-    // get the duration of the audio file
-    // => we have to create a new audio object & get its status to get the duration
-
-    const getAudioDuration = async (uri: string) => {
-        const sound = await Audio.Sound.createAsync({ uri })
-        const status = await sound.sound.getStatusAsync()
-        return status.isLoaded ? (status.durationMillis || 0) / 1000 : 0
-    }
 
     const saveRecording = async (uri: string, rename: boolean = true, name?: string) => {
         
@@ -131,7 +124,7 @@ const Home = ({ navigation }: ScreenProps) => {
         
         // rename the file
 
-        const newFileName = `timbre-app-rec-${new Date().toISOString()}.m4a`
+        const newFileName = `timbre-app-rec-${new Date().toISOString()}.wav`
 
         const newURI = uri.split('/').slice(0, -1).join('/') + '/' + newFileName
 
@@ -150,7 +143,9 @@ const Home = ({ navigation }: ScreenProps) => {
         }
 
         setRecordings([ ...recordings, newRecording])
-        return newRecording
+        // navigate to the recordings screen
+        // @ts-ignore
+        navigation.navigate('Recordings')
     }
 
     // start recording when the button is pressed
@@ -188,8 +183,7 @@ const Home = ({ navigation }: ScreenProps) => {
         })
         const uri = recording.getURI()
         if(!uri) return
-        const res = await saveRecording(uri)
-        console.log("recording saved ! => ", res)
+        await saveRecording(uri)
     }
 
     // start or stop the recording when the button is pressed

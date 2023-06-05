@@ -1,13 +1,14 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet"
-import { Dimensions, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import { AudioFileType, Context } from "@utils/context";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import styles from "@styles/components/audio-player-modal.scss"
 import Button from "./button";
-import { faArrowRotateLeft, faCircle, faPause, faPlay, faTimes, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRotateLeft, faPause, faPlay, faTimes, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
 import { Audio } from "expo-av";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import * as FileSystem from 'expo-file-system';
 
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
     index: number;
     toggler: boolean;
     savedAudioMode?: boolean;
+    onTransformClick?: (audio: AudioFileType) => void;
 }
 
 const AudioPlayerModal = (
@@ -22,7 +24,8 @@ const AudioPlayerModal = (
         audio, 
         index,
         toggler,
-        savedAudioMode
+        savedAudioMode,
+        onTransformClick
     }: Props,
     ref: React.Ref<BottomSheetModal>
 ) => {
@@ -97,7 +100,8 @@ const AudioPlayerModal = (
         } else {
             setRecordings(recordings.filter((recording) => recording.uri !== audio.uri))
         }
-
+        // delete the file from the file system
+        FileSystem.deleteAsync(audio.uri).catch(console.log)
         handleClose()
     }
 
@@ -125,6 +129,13 @@ const AudioPlayerModal = (
         setIsPlaying(!isPlaying)
     }
 
+    const handleTransform = () => {
+        if(!audio) return
+        if(!onTransformClick) return
+        handleClose()
+        onTransformClick(audio)
+    }
+
 
     // render
 
@@ -144,7 +155,7 @@ const AudioPlayerModal = (
                 <View style={styles.content}>
                     <View style={styles.header}>
                         <View style={styles.headerTextContainer}>
-                            <Text style={styles.title}>Recording number { index + 1 }</Text>
+                            <Text style={styles.title}>Recording number { recordings.length - index }</Text>
                             <Text style={styles.date}>{ getDateString() }</Text>
                         </View>
                         <Button 
@@ -200,9 +211,9 @@ const AudioPlayerModal = (
                         !savedAudioMode ?
                         <Button 
                             fullWidth
-                            title="Transform"
+                            title="Select"
                             icon={faWaveSquare}
-                            onPress={() => {}}
+                            onPress={handleTransform}
                         />
                         :
                         <></>

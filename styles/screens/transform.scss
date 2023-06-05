@@ -1,0 +1,71 @@
+@import "../abstracts/_colors.scss";
+@import "../base/_typography.scss";
+@import "../base/_mixins.scss";
+
+
+.brandContainer {
+
+    @include flex-container(column, nowrap, center, center);
+    height: 210px;
+    width: 100%;
+}
+
+.container {
+
+    @include flex-container(column, nowrap, flex-start, stretch);
+    gap: 32px;
+    width: 100%;
+    padding: 16px 0px 0px;
+
+    flex: 1;
+}
+
+.section {
+    
+        @include flex-container(column, nowrap, flex-start, stretch);
+        gap: 16px;
+        width: 100%;
+}
+
+.sectionTitle {
+
+    @include text-md-medium;
+    color: $white-400;
+}
+
+
+.audioContainer {
+    
+        @include flex-container(row, nowrap, space-between, center);
+        align-self: stretch;
+        height: 80px;
+}
+
+.audioTitleContainer {
+    
+        @include flex-container(column, nowrap, center, flex-start);
+        gap: 4px;
+}
+
+.audioName {
+    
+        @include typo-maker($text-xl-font-size, $font-weight-light);
+        color: $white;
+}
+
+.audioDate {    
+    @include text-sm-medium;
+    color: $white-400;
+}
+
+.duration {
+        
+            @include typo-maker($text-md-font-size, $font-weight-light);
+            color: $white-400;
+}
+
+.noAudioText {
+
+    @include typo-maker($text-md-font-size, $font-weight-light);
+    color: $white-400;
+}

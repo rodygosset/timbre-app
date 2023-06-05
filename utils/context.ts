@@ -24,13 +24,25 @@ export interface AppContextType {
     setRecordings: (recordings: AudioFileType[]) => void; 
     transformedRecordings: AudioFileType[]; // list of transformed recordings
     setTransformedRecordings: (transformedRecordings: AudioFileType[]) => void; 
+    selectedRecording: AudioFileType | null; // the recording sent by the transform screen
+    setSelectedRecording: (recording: AudioFileType | null) => void;
+    models: string[]; // list of models
+    setModels: (models: string[]) => void;
+    selectedModel: string | null; // the model selected by the user
+    setSelectedModel: (model: string | null) => void;
 }
 
 export const initContext: AppContextType = {
     recordings: [],
     setRecordings: () => {},
     transformedRecordings: [],
-    setTransformedRecordings: () => {}
+    setTransformedRecordings: () => {},
+    selectedRecording: null,
+    setSelectedRecording: () => {},
+    models: [],
+    setModels: () => {},
+    selectedModel: null,
+    setSelectedModel: () => {},
 }
 
 export const Context = React.createContext(initContext)
