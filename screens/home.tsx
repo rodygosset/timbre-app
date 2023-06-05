@@ -105,18 +105,22 @@ const Home = ({ navigation }: ScreenProps) => {
 
     const { recordings, setRecordings } = useContext(Context)
 
+    // get the duration of the audio file
+    // => we have to create a new audio object & get its status to get the duration
+
+    const getAudioDuration = async (uri: string) => {
+        const sound = await Audio.Sound.createAsync({ uri })
+        const status = await sound.sound.getStatusAsync()
+        return status.isLoaded ? (status.durationMillis || 0) / 1000 : 0
+    }
+
     const saveRecording = async (uri: string, rename: boolean = true, name?: string) => {
         
         if(!rename) {
 
-            // get the duration of the audio file
-            // => we have to create a new audio object & get its status to get the duration
-
-            const duration = await Audio.Sound.createAsync({ uri }).then(sound => sound.sound.getStatusAsync()).then(status => status.isLoaded ? Math.floor((status.durationMillis || 0) / 1000) : 0)
-
             const newRecording: AudioFileType = {
                 name: name || uri.split('/').slice(-1)[0],
-                duration: duration,
+                duration: await getAudioDuration(uri),
                 uri: uri,
                 date: new Date()
             }
@@ -140,7 +144,7 @@ const Home = ({ navigation }: ScreenProps) => {
 
         const newRecording: AudioFileType = {
             name: newFileName,
-            duration: timeElapsed,
+            duration: await getAudioDuration(newURI),
             uri: newURI,
             date: new Date()
         }

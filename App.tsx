@@ -139,12 +139,12 @@ export default function App() {
 				:
 				<></>
 			}
-			</Context.Provider>
-            <AudioPlayerModal 
+			<AudioPlayerModal 
 				audio={playingAudio} 
 				index={playingAudioIndex}
 				toggler={toggler}
 			/>
+			</Context.Provider>
 		</BottomSheetModalProvider>
 	)
 }

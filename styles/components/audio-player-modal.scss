@@ -45,6 +45,39 @@
     color: $white-400;
 }
 
+
+.progress {
+    @include flex-container(column, nowrap, center, stretch);
+    gap: 8px;
+}
+
+.progressBar {
+    @include flex-container(row, nowrap, flex-start, center);
+    gap: 0px;
+    height: 4px;
+    width: 100%;
+
+    background: $white-200;
+
+    border-radius: 4px;
+}
+
+
+.progressIndicator {
+    height: 100%;
+    background: $secondary;
+    border-radius: 4px;
+}
+
+.timeIndicators {
+    @include flex-container(row, nowrap, space-between, center);
+}
+
+.timeIndicator {
+    @include typo-maker($text-sm-font-size, $font-weight-light);
+    color: $white-400;
+}
+
 .buttonsContainer {
     @include flex-container(row, nowrap, space-between, center);
     width: 100%;

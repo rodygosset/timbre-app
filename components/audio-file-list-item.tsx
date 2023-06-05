@@ -24,7 +24,7 @@ const AudioFileListItem = ({ item, index, isLast, onPress }: Props) => {
     }
 
     const getSeconds = () => {
-        const seconds = item.duration % 60
+        const seconds = Math.floor(item.duration % 60)
         return seconds < 10 ? `0${seconds}` : `${seconds}`
     }
 

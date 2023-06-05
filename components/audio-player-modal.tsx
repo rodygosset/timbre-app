@@ -1,12 +1,13 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet"
-import { Text, View } from "react-native"
-import { AudioFileType } from "@utils/context";
-import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, Text, View } from "react-native"
+import { AudioFileType, Context } from "@utils/context";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import styles from "@styles/components/audio-player-modal.scss"
 import Button from "./button";
-import { faArrowRotateLeft, faPause, faPlay, faTimes, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRotateLeft, faCircle, faPause, faPlay, faTimes, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
 import { Audio } from "expo-av";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 
 interface Props {
@@ -30,7 +31,7 @@ const AudioPlayerModal = (
 
     const bottomSheetModalRef = useRef<BottomSheetModal>(null)
 
-    const snapPoints = [300]
+    const snapPoints = [375]
 
     const handlePresentModalPress = () => {
         bottomSheetModalRef.current?.present()
@@ -65,7 +66,15 @@ const AudioPlayerModal = (
     const getDateString = () => (new Date(audio?.date)).toLocaleDateString("en-US", dateOptions)
 
 
-    // handlers
+    const getTimeString = (time: number) => {
+        const minutes = Math.floor(time / 60)
+        const seconds = Math.floor(time % 60)
+        const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`
+        const secondsString = seconds < 10 ? `0${seconds}` : `${seconds}`
+        return `${minutesString}:${secondsString}`
+    }
+
+    // button handlers
 
     const handleClose = () => {
         setIsPlaying(false)
@@ -74,6 +83,48 @@ const AudioPlayerModal = (
         setProgress(0)
         bottomSheetModalRef.current?.dismiss()
     }
+
+    // delete the audio file from the list
+
+    // first retrieve the list of audio files from the context
+
+    const { recordings, setRecordings, transformedRecordings, setTransformedRecordings } = useContext(Context)
+
+    const handleDelete = () => {
+        if(!audio) return
+        if(savedAudioMode) {
+            setTransformedRecordings(transformedRecordings.filter((recording) => recording.uri !== audio.uri))
+        } else {
+            setRecordings(recordings.filter((recording) => recording.uri !== audio.uri))
+        }
+
+        handleClose()
+    }
+
+    const handleRestart = () => {
+        if(!audio) return
+        sound?.setPositionAsync(0)
+    }
+
+    const handlePlayPause = () => {
+        if(!audio || !sound) return
+        // pause or play the audio depending on its current state
+        isPlaying ? sound.pauseAsync() : sound.playAsync()
+        // update the progress every 50ms
+        sound.setProgressUpdateIntervalAsync(50)
+        sound.setOnPlaybackStatusUpdate((status) => {
+            if(!status.isLoaded) return
+            const { positionMillis, durationMillis } = status
+            // keep track of the progress
+            setProgress(positionMillis / 1000)
+            // stop the audio when it reaches the end
+            if(positionMillis === durationMillis) {
+                setIsPlaying(false)
+            }
+        })
+        setIsPlaying(!isPlaying)
+    }
+
 
     // render
 
@@ -105,73 +156,57 @@ const AudioPlayerModal = (
                             onPress={handleClose}
                         />
                     </View>
+                    <View style={styles.progress}>
+                        <View style={styles.progressBar}>
+                            <View style={[styles.progressIndicator, { flexBasis: `${progress * 100 / audio.duration}%` }]}/>
+                        </View>
+                        <View style={styles.timeIndicators}>
+                            <Text style={styles.timeIndicator}>{ getTimeString(progress) }</Text>
+                            <Text style={styles.timeIndicator}>{ getTimeString(audio.duration) }</Text>
+                        </View>
+                    </View>
                     <View style={styles.buttonsContainer}>
+                        <Button 
+                            round
+                            width={60}
+                            height={60}
+                            role="tertiary"
+                            icon={faArrowRotateLeft}
+                            iconSize="small"
+                            onPress={handleRestart}
+                        />
+
+                        <Button 
+                            round
+                            width={60}
+                            height={60}
+                            role="secondary"
+                            icon={isPlaying ? faPause : faPlay}
+                            iconSize="medium"
+                            onPress={handlePlayPause}
+                        />
+
+                        <Button 
+                            round
+                            width={60}
+                            height={60}
+                            icon={faTrash}
+                            role="tertiary"
+                            iconSize="small"
+                            onPress={handleDelete}
+                        />
+                    </View>
                     {
                         !savedAudioMode ?
-                        <>
-                            <Button 
-                                round
-                                width={60}
-                                height={60}
-                                role="tertiary"
-                                icon={faArrowRotateLeft}
-                                iconSize="small"
-                                onPress={() => {}}
-                            />
-
-                            <Button 
-                                round
-                                width={60}
-                                height={60}
-                                role="secondary"
-                                icon={isPlaying ? faPause : faPlay}
-                                iconSize="medium"
-                                onPress={() => {}}
-                            />
-
-                            <Button 
-                                round
-                                width={60}
-                                height={60}
-                                icon={faTrash}
-                                role="tertiary"
-                                iconSize="small"
-                                onPress={() => {}}
-                            />
-                        </>
+                        <Button 
+                            fullWidth
+                            title="Transform"
+                            icon={faWaveSquare}
+                            onPress={() => {}}
+                        />
                         :
-                        <>
-                            <Button 
-                                round
-                                width={60}
-                                height={60}
-                                role="tertiary"
-                                icon={faTrash}
-                                iconSize="small"
-                                onPress={() => {}}
-                            />
-
-                            <Button 
-                                round
-                                width={60}
-                                height={60}
-                                role="secondary"
-                                icon={isPlaying ? faPause : faPlay}
-                                iconSize="medium"
-                                onPress={() => {}}
-                            />
-
-                            <Button 
-                                round
-                                width={60}
-                                height={60}
-                                icon={faWaveSquare}
-                                iconSize="small"
-                                onPress={() => {}}
-                            />
-                        </>
+                        <></>
                     }
-                    </View>
                 </View>
             </BottomSheetModal>
             :
