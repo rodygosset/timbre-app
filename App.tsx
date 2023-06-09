@@ -14,7 +14,7 @@ import Transform from '@screens/transform';
 import Saved from '@screens/saved';
 import { fonts } from '@utils/fonts';
 import { useFonts } from 'expo-font';
-import { AudioFileType, Context, getPersistedRecordings, getPersistedTransformedRecordings, setPersistedRecordings } from '@utils/context';
+import { AudioFileType, Context, getPersistedRecordings, getPersistedTransformedRecordings, setPersistedRecordings, setPersistedTransformedRecordings } from '@utils/context';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import AudioPlayerModal from '@components/audio-player-modal';
@@ -39,15 +39,13 @@ export default function App() {
 	// keep the list of recordings consistent with local storage
 
 	const setRecordings = (list: AudioFileType[]) => {
-		setPersistedRecordings(list).then(recordingsSetter).then(() => {
-			getPersistedRecordings().catch(console.log)
-		}).catch(console.log)
+		setPersistedRecordings(list).then(recordingsSetter).catch(console.log)
 	}
 
 	// keep the list of transformed recordings consistent with local storage
 
 	const setTransformedRecordings = (list: AudioFileType[]) => {
-		setPersistedRecordings(list).then(transformedRecordingsSetter).catch(console.log)
+		setPersistedTransformedRecordings(list).then(transformedRecordingsSetter).catch(console.log)
 	}
 
 	// load data from local storage on app load
