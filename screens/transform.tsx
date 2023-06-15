@@ -11,6 +11,7 @@ import { faFileWaveform, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
 import ModelPicker from "@components/model-picker"
 import { downloadFile, getAudioDuration, sendFile } from "@utils/lib"
 
+
 interface Props extends ScreenProps {
     onPickerModalToggle: () => void;
 }
@@ -48,6 +49,7 @@ const Transform = ({ navigation, onPickerModalToggle }: Props) => {
         if(!selectedModel) return
 
         sendFile(selectedRecording.uri, selectedModel).then(downloadFile).then(async (uri) => {
+            
             const newResult: AudioFileType = {
                 name: uri.split('/').slice(-1)[0],
                 duration: await getAudioDuration(uri),

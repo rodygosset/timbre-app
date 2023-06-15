@@ -24,7 +24,7 @@ export const downloadFile = async () => {
     const newFileName = `timbre-app-result-${new Date().toISOString()}.wav`
 
     // Download file
-    const { uri } = await FileSystem.downloadAsync("https://rave-server.rodygosset.dev/download", FileSystem.documentDirectory + "/" + newFileName)
+    const { uri } = await FileSystem.downloadAsync("https://rave-server.rodygosset.dev/download", FileSystem.documentDirectory + newFileName)
 
     return uri
 }

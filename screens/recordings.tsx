@@ -19,7 +19,6 @@ const Recordings = ({ onAudioPress }: Props) => {
 
     const { recordings } = useContext(Context)
 
-
     // sort the recordings by date
 
     const getRecordingsByDate = (): ListOfRecordingsProps[] => {
