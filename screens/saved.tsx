@@ -29,13 +29,13 @@ const Saved = ({ onAudioPress }: Props) => {
 
         // create a list of dates
 
-        const dates = [...new Set(sortedRecordings.map(recording => (new Date(recording.date)).toISOString().split("T")[0]))]
+        const dates = [...new Set(sortedRecordings.map(recording => recording.date.toISOString().split("T")[0]))]
 
         // create & return  a list of recordings for each date
 
         return dates.map(date => ({
             date: new Date(date),
-            recordings: sortedRecordings.filter(recording => (new Date(recording.date)).toISOString().split("T")[0] === date)
+            recordings: sortedRecordings.filter(recording => recording.date.toISOString().split("T")[0] === date)
         }))
     }
 

@@ -111,10 +111,12 @@ const Home = ({ navigation }: ScreenProps) => {
         
         if(!rename) {
 
+            const recName = name || uri.split('/').slice(-1)[0]
+
             const newRecording: AudioFileType = {
-                name: name || uri.split('/').slice(-1)[0],
+                name: recName,
                 duration: await getAudioDuration(uri),
-                uri: uri,
+                uri: FileSystem.documentDirectory + recName,
                 date: new Date()
             }
 
@@ -126,7 +128,7 @@ const Home = ({ navigation }: ScreenProps) => {
 
         const newFileName = `timbre-app-rec-${new Date().toISOString()}.wav`
 
-        const newURI = uri.split('/').slice(0, -1).join('/') + '/' + newFileName
+        const newURI = FileSystem.documentDirectory + newFileName
 
         await FileSystem.moveAsync({
             from: uri,

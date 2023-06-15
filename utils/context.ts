@@ -86,7 +86,9 @@ export const setPersistedRecordings = (data: AudioFileType[]) => {
  */
 
 export const getPersistedTransformedRecordings = () => {
-    return AsyncStorage.getItem('@transformedRecordings').then((res) => res != null ? JSON.parse(res) : []).catch(e => {
+    return AsyncStorage.getItem('@transformedRecordings').then((res) => res != null ? JSON.parse(res) : []).then(data => {
+        return data.map((recording: AudioFileType) => ({ ...recording, date: new Date(recording.date) }))
+    }).catch(e => {
         console.log(e)
         return []
     }) as Promise<AudioFileType[]>
